@@ -17,11 +17,12 @@ namespace YFarm.Inventory
             sr = GetComponentInChildren<SpriteRenderer>();
             cd = GetComponent<BoxCollider2D>();
         }
-
+        
         private void Start()
         {
             Init(itemID);
         }
+
 
         public void Init(int ID)
         {

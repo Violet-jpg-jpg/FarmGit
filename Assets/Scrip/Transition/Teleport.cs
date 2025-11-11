@@ -12,7 +12,8 @@ namespace YFarm.Transition
 
         void OnTriggerEnter2D(Collider2D collision)
         {
-            EventHandler.CallTransitionEvent(targetScene, transitionPoint);
+            if(collision.gameObject.CompareTag("Player"))
+                EventHandler.CallTransitionEvent(targetScene, transitionPoint);
         }
     }
 }

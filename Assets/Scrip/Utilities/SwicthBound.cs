@@ -6,16 +6,21 @@ using UnityEngine;
 public class SwicthBound : MonoBehaviour
 {
 
-    private void Start()
+    void OnEnable()
     {
-        SwitchConfinerShape();
+        EventHandler.AfterSceneUnLoadEvent += SwitchConfinerShape;
+    }
+
+    void OnDisable()
+    {
+        EventHandler.AfterSceneUnLoadEvent -= SwitchConfinerShape;
     }
     private void SwitchConfinerShape()
     {
         PolygonCollider2D confinerShape = GameObject.FindGameObjectWithTag("BoundConfiner").GetComponent<PolygonCollider2D>();
         CinemachineConfiner confiner = GetComponent<CinemachineConfiner>();
         confiner.m_BoundingShape2D = confinerShape;
-        //切换场景时调用，清理缓存
+        //鍒囨崲鍦烘櫙鏃惰皟鐢紝娓呯悊缂撳瓨
         confiner.InvalidatePathCache();
     }
 }

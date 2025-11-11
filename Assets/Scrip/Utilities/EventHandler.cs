@@ -38,8 +38,20 @@ public static class EventHandler
     }
 
     public static event Action<string, Vector3> TransitionEvent;
-    public static void CallTransitionEvent(string targetScene,Vector3 transitionPoint)
+    public static void CallTransitionEvent(string targetScene, Vector3 transitionPoint)
     {
         TransitionEvent?.Invoke(targetScene, transitionPoint);
+    }
+
+    public static event Action BeforeSceneUnLoadEvent;
+    public static void CallBeforeSceneUnLoadEvent()
+    {
+        BeforeSceneUnLoadEvent?.Invoke();
+    }
+
+    public static event Action AfterSceneUnLoadEvent;
+    public static void CallAFterSceneUnLoadEvent()
+    {
+        AfterSceneUnLoadEvent?.Invoke();
     }
 }

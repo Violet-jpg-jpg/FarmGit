@@ -12,6 +12,7 @@ namespace YFarm.Transition
         void Start()
         {
             StartCoroutine(LoadSceneSetActive(startScene));
+            Debug.Log(SceneManager.GetActiveScene().name);
         }
 
         void OnEnable()
