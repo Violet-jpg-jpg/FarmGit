@@ -32,8 +32,14 @@ public static class EventHandler
     }
 
     public static event Action<int, int, int, Season> GameDateEvent;
-    public static void CallGameDateEvent(int day,int month,int year,Season season)
+    public static void CallGameDateEvent(int day, int month, int year, Season season)
     {
         GameDateEvent?.Invoke(day, month, year, season);
+    }
+
+    public static event Action<string, Vector3> TransitionEvent;
+    public static void CallTransitionEvent(string targetScene,Vector3 transitionPoint)
+    {
+        TransitionEvent?.Invoke(targetScene, transitionPoint);
     }
 }

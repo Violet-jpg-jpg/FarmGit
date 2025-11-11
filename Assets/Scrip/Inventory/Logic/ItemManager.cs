@@ -13,7 +13,7 @@ public class ItemManager : MonoBehaviour
         EventHandler.InstantiateItemInScene += OnInstantiateItemInScene;
     }
 
-    void Osable()
+    void OnDisable()
     {
         EventHandler.InstantiateItemInScene -= OnInstantiateItemInScene;   
     }
