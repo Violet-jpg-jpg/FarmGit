@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace YFarm.Transition
@@ -8,6 +9,7 @@ namespace YFarm.Transition
     public class TransitionManager : MonoBehaviour
     {
         public string startScene = string.Empty;
+        private CanvasGroup fadeCanvas;
 
         void Start()
         {
@@ -38,8 +40,15 @@ namespace YFarm.Transition
         /// <returns></returns>
         private IEnumerator Transition(string sceneName,Vector3 transitionPoint)
         {
+            EventHandler.CallBeforeSceneUnLoadEvent();
+
             yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+
             yield return LoadSceneSetActive(sceneName);
+
+            EventHandler.CallMoveToPosition(transitionPoint);
+
+            EventHandler.CallAfterSceneUnLoadEvent();
         }
 
         /// <summary>

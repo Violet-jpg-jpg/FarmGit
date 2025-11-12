@@ -50,8 +50,14 @@ public static class EventHandler
     }
 
     public static event Action AfterSceneUnLoadEvent;
-    public static void CallAFterSceneUnLoadEvent()
+    public static void CallAfterSceneUnLoadEvent()
     {
         AfterSceneUnLoadEvent?.Invoke();
+    }
+
+    public static event Action<Vector3> MoveToPosition;
+    public static void CallMoveToPosition(Vector3 position)
+    {
+        MoveToPosition?.Invoke(position);
     }
 }

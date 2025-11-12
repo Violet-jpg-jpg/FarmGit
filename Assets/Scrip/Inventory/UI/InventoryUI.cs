@@ -21,12 +21,15 @@ namespace YFarm.Inventory
         void OnEnable()
         {
             EventHandler.UpdateInventoryUI += OnUpdateInventoryUI;
+            EventHandler.BeforeSceneUnLoadEvent += OnBeforeSceneUnLoadEvent;
         }
 
         void OnDisable()
         {
             EventHandler.UpdateInventoryUI -= OnUpdateInventoryUI;
+            EventHandler.BeforeSceneUnLoadEvent -= OnBeforeSceneUnLoadEvent;
         }
+
 
         void Awake()
         {
@@ -44,6 +47,10 @@ namespace YFarm.Inventory
             {
                 OpenBagUI();
             }
+        }
+        private void OnBeforeSceneUnLoadEvent()
+        {
+            UpdateHighLight(-1);
         }
 
         private void OnUpdateInventoryUI(InventoryLocation location, List<InventoryItem> list)
@@ -75,7 +82,10 @@ namespace YFarm.Inventory
             bagOpened = !bagOpened;
             bagPanel.SetActive(bagOpened);
         }
-
+        /// <summary>
+        ///  更新高亮UI
+        /// </summary>
+        /// <param name="index">当前高亮下标，若传入-1则清空所有高亮</param>
         public void UpdateHighLight(int index)
         {
             foreach (var slot in playerSlots)

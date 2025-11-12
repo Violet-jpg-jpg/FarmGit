@@ -13,6 +13,21 @@ public class Player : MonoBehaviour
     private bool isMoving;
     private Vector2 movementInput;
 
+    private bool inputDisable = false;
+
+    void OnEnable()
+    {
+        EventHandler.BeforeSceneUnLoadEvent += OnBeforeSceneUnLoad;
+        EventHandler.AfterSceneUnLoadEvent += OnAfterSceneUnLoad;
+        EventHandler.MoveToPosition += OnMoveToPosition;
+    }
+
+    void OnDisable()
+    {
+        EventHandler.BeforeSceneUnLoadEvent -= OnBeforeSceneUnLoad;
+        EventHandler.AfterSceneUnLoadEvent -= OnAfterSceneUnLoad;
+        EventHandler.MoveToPosition -= OnMoveToPosition;
+    }
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -21,13 +36,29 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        PlayerInput();
+        if(!inputDisable)
+            PlayerInput();
         SwitchAnimation();
     }
 
     private void FixedUpdate()
     {
         Movement();
+    }
+
+    private void OnBeforeSceneUnLoad()
+    {
+        inputDisable = true;
+    }
+
+    private void OnAfterSceneUnLoad()
+    {
+        inputDisable = false;
+    }
+    
+    private void OnMoveToPosition(Vector3 targetPosition)
+    {
+        transform.position = targetPosition;
     }
 
     private void PlayerInput()

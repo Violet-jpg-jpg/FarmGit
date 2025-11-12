@@ -14,11 +14,14 @@ public class AnimatorOverride : MonoBehaviour
     void OnEnable()
     {
         EventHandler.ItemSelectedEvent += OnItemSelectedEvent;
+        EventHandler.BeforeSceneUnLoadEvent += OnBeforeSceneUnLoadEvent;
     }
+
 
     void OnDisable()
     {
         EventHandler.ItemSelectedEvent -= OnItemSelectedEvent;
+        EventHandler.BeforeSceneUnLoadEvent -= OnBeforeSceneUnLoadEvent;
     }
     void Awake()
     {
@@ -29,9 +32,19 @@ public class AnimatorOverride : MonoBehaviour
         }
     }
 
+    private void OnBeforeSceneUnLoadEvent()
+    {
+        SwitchAnimatior(PartType.None);
+        holdItem.enabled = false;
+    }
+    /// <summary>
+    /// 传入装备工具信息，以用来切换动画
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="isSelected"></param>
     private void OnItemSelectedEvent(ItemDetails item, bool isSelected)
     {
-        //WORKFLOW:不全不同工具的不同动画
+        //WORKFLOW:补全全不同工具的不同动画
         PartType partType = item.itemType switch
         {
             ItemType.Seed => PartType.Hold,
@@ -49,9 +62,13 @@ public class AnimatorOverride : MonoBehaviour
             holdItem.enabled = true;
             holdItem.sprite = item.itemInWorldSprite;
         }
-            SwitchAnimatior(partType);
+        SwitchAnimatior(partType);
     }
     
+    /// <summary>
+    /// 切换动画
+    /// </summary>
+    /// <param name="partType">动画</param>
     private void SwitchAnimatior(PartType partType)
     {
         foreach(var anim in animationTypes)
