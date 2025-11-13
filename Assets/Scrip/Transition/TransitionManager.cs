@@ -9,12 +9,13 @@ namespace YFarm.Transition
     public class TransitionManager : MonoBehaviour
     {
         public string startScene = string.Empty;
-        private CanvasGroup fadeCanvas;
+        public CanvasGroup fadeCanvas;
+        private bool isFade;
 
         void Start()
         {
             StartCoroutine(LoadSceneSetActive(startScene));
-            Debug.Log(SceneManager.GetActiveScene().name);
+            fadeCanvas = FindObjectOfType<CanvasGroup>();
         }
 
         void OnEnable()
@@ -29,7 +30,8 @@ namespace YFarm.Transition
         
         private void OnTransitionEvent(string targetScene,Vector3 transitionPoint)
         {
-            StartCoroutine(Transition(targetScene, transitionPoint));
+            if(!isFade)
+                StartCoroutine(Transition(targetScene, transitionPoint));
         }
 
         /// <summary>
@@ -42,6 +44,8 @@ namespace YFarm.Transition
         {
             EventHandler.CallBeforeSceneUnLoadEvent();
 
+            yield return Fade(1);
+
             yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
 
             yield return LoadSceneSetActive(sceneName);
@@ -49,6 +53,8 @@ namespace YFarm.Transition
             EventHandler.CallMoveToPosition(transitionPoint);
 
             EventHandler.CallAfterSceneUnLoadEvent();
+            
+            yield return Fade(0);
         }
 
         /// <summary>
@@ -62,6 +68,25 @@ namespace YFarm.Transition
             Scene newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
 
             SceneManager.SetActiveScene(newScene);
+        }
+
+        /// <summary>
+        /// 淡入淡出场景
+        /// </summary>
+        /// <param name="targetAlpha">1是黑，0是透明</param>
+        /// <returns></returns>
+        private IEnumerator Fade(float targetAlpha)
+        {
+            isFade = true;
+            fadeCanvas.blocksRaycasts = true;//是否遮挡鼠标
+            float speed = Mathf.Abs(targetAlpha - fadeCanvas.alpha) / Settings.fadeDuration;
+            while (!Mathf.Approximately(fadeCanvas.alpha, targetAlpha))
+            {
+                fadeCanvas.alpha = Mathf.MoveTowards(fadeCanvas.alpha, targetAlpha, speed * Time.deltaTime);
+                yield return null;
+            }
+            fadeCanvas.blocksRaycasts = false;
+            isFade = false;
         }
     }
 }

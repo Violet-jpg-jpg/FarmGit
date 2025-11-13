@@ -36,14 +36,17 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(!inputDisable)
+        if (!inputDisable)
             PlayerInput();
+        else
+            isMoving = false;
         SwitchAnimation();
     }
 
     private void FixedUpdate()
     {
-        Movement();
+        if (!inputDisable)
+            Movement();
     }
 
     private void OnBeforeSceneUnLoad()

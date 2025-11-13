@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Settings
 {
-    public const float fadeDuration = 0.35f;
+    public const float itemFadeDuration = 0.35f;
     public const float targetAlpha = 0.4f;
 
     //时间相关
@@ -14,5 +14,8 @@ public class Settings
     public const int hourHold = 23;
     public const int dayHold = 10; //每个月天数
     public const int seasonHold = 3;
+
+    //场景加载相关
+    public const float fadeDuration = 2f;
     
 }
