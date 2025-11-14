@@ -31,3 +31,9 @@ public enum Season
 {
     春天,夏天,秋天,冬天,
 }
+
+//地图网格信息
+public enum GridType
+{
+    Diggble,DropItem,PlaceFurniture,NPCObstacle
+}

@@ -72,3 +72,27 @@ public class SceneItem
     public int itemID;
     public SerializableVector3 pos;
 }
+
+[Serializable]
+public class TileProperty
+{
+    public Vector2Int tileCordinate;//坐标
+    public GridType gridType;
+    public bool boolTypeValue;
+}
+
+[Serializable]
+public class TileDetails
+{
+    //格子坐标
+    public int gridX,gridY;
+    public bool canDig;
+    public bool canDropItem;
+    public bool canPlaceFurniture;
+    public bool isNPCObstacle;
+    public int daySinceDug = -1;
+    public int daySInceWatered = -1;
+    public int seedItemId = -1;
+    public int growDays = -1;
+    
+}
