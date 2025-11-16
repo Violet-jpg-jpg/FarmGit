@@ -12,10 +12,11 @@ namespace YFarm.Transition
         public CanvasGroup fadeCanvas;
         private bool isFade;
 
-        void Start()
+        IEnumerator Start()
         {
-            StartCoroutine(LoadSceneSetActive(startScene));
             fadeCanvas = FindObjectOfType<CanvasGroup>();
+            yield return StartCoroutine(LoadSceneSetActive(startScene));
+            EventHandler.CallAfterSceneUnLoadEvent();
         }
 
         void OnEnable()

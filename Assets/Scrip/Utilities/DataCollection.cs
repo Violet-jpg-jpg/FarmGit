@@ -77,8 +77,8 @@ public class SceneItem
 public class TileProperty
 {
     public Vector2Int tileCordinate;//坐标
-    public GridType gridType;
-    public bool boolTypeValue;
+    public GridType gridType;//该格子所属的Grid的Type
+    public bool boolTypeValue;//该格子是否具有当前Grid的属性
 }
 
 [Serializable]
