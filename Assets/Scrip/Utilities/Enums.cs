@@ -17,12 +17,12 @@ public enum InventoryLocation
 
 public enum PartType
 {
-    None,Hold,
+    None,Hold,Hoe,Water,
 }
 
 public enum PartName
 {
-    Body, Hair, Arm,
+    Body, Hair, Arm,Tool,
 }
 
 

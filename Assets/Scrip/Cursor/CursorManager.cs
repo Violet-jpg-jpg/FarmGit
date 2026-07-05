@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using YFarm.Inventory;
 
 public class CursorManager : MonoBehaviour
 {
@@ -63,11 +65,20 @@ public class CursorManager : MonoBehaviour
         {
             SetCursorImage(currentSprite);
             CheckCursorValid();
+            CheckPlayerInput();
         }
         else
             SetCursorImage(normal);
     }
 
+    private void CheckPlayerInput()
+    {
+        if(Input.GetMouseButtonDown(0) && cursorPostionValid)
+        {
+            EventHandler.CallMouseClickEvent(mouseWorldPos,currentItem);
+        }
+    }
+    
     #region 设置鼠标样式
     /// <summary>
     /// 设置鼠标图片
@@ -110,6 +121,7 @@ public class CursorManager : MonoBehaviour
     private void CheckCursorValid()
     {
         mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPos.z = 0f;
         mouseGridPos = currentGrid.WorldToCell(mouseWorldPos);
 
         TileDetails currentTiles = GridManager.Instance.GetTileDetailsOnMousePosition(mouseGridPos);
@@ -129,6 +141,12 @@ public class CursorManager : MonoBehaviour
             {
                 case ItemType.Commodity:
                     if(currentTiles.canDropItem && currentItem.canDropped) SetCursorValid();else SetCursorInValid();
+                    break;
+                case ItemType.HoeTool:
+                    if(currentTiles.canDig) SetCursorValid();else SetCursorInValid();
+                    break;
+                case ItemType.WaterTool:
+                    if(currentTiles.daySinceDug > -1 && currentTiles.daySInceWatered == -1) SetCursorValid();else SetCursorInValid();
                     break;
             }
         }

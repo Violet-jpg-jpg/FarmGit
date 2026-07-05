@@ -9,15 +9,19 @@ using YFarm.Inventory;
 public class ItemManager : MonoBehaviour
 {
     public Item itemPrefab;
+    public Item bouncePrefab;
     private Transform itemParent;
 
     private Dictionary<string, List<SceneItem>> sceneItemDict = new Dictionary<string, List<SceneItem>>();
+
+    private Transform PlayerTransform => FindObjectOfType<Player>().transform;
 
     void OnEnable()
     {
         EventHandler.InstantiateItemInScene += OnInstantiateItemInScene;
         EventHandler.BeforeSceneUnLoadEvent += OnBeforeSceneUnLoadEvent;
         EventHandler.AfterSceneUnLoadEvent += OnAfterSceneLoadEvnet;
+        EventHandler.DropItemEvent += OnDropOItemEvent;
     }
 
     void OnDisable()
@@ -25,8 +29,10 @@ public class ItemManager : MonoBehaviour
         EventHandler.InstantiateItemInScene -= OnInstantiateItemInScene;
         EventHandler.BeforeSceneUnLoadEvent -= OnBeforeSceneUnLoadEvent;
         EventHandler.AfterSceneUnLoadEvent -= OnAfterSceneLoadEvnet;
+        EventHandler.DropItemEvent -= OnDropOItemEvent;
     }
 
+    
     private void OnBeforeSceneUnLoadEvent()
     {
         GetAllSceneItem();
@@ -38,12 +44,25 @@ public class ItemManager : MonoBehaviour
         RecreateAllItems();
     }
 
-
+    /// <summary>
+    /// 在指定地点生成物品
+    /// </summary>
+    /// <param name="ID">生成物品ID</param>
+    /// <param name="pos">生成坐标</param>
     private void OnInstantiateItemInScene(int ID, Vector3 pos)
     {
         var item = Instantiate(itemPrefab, pos, Quaternion.identity, itemParent);
         item.itemID = ID;
     }
+
+    private void OnDropOItemEvent(int ID, Vector3 mousePos)
+    {
+        var item = Instantiate(bouncePrefab, PlayerTransform.position, Quaternion.identity, itemParent);
+        item.itemID = ID;
+        var dir = (mousePos - PlayerTransform.position).normalized;
+        item.GetComponent<ItemBounce>().IniteItemBounce(dir,mousePos);
+    }
+
 
     private void GetAllSceneItem()
     {
@@ -90,4 +109,7 @@ public class ItemManager : MonoBehaviour
             }
         }
     }
+
+    
+
 }

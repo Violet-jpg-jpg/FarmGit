@@ -12,7 +12,17 @@ namespace YFarm.Inventory
         {
             EventHandler.CallUpdateInventoryUI(InventoryLocation.Bag, playerBag.inventoryItems);
         }
+        void OnEnable()
+        {
+            EventHandler.DropItemEvent += OnDropItemEvent;
+        }
 
+        
+
+        void OnDisable()
+        {
+            EventHandler.DropItemEvent -= OnDropItemEvent;
+        }
         /// <summary>
         /// ͨ查找物品
         /// </summary>
@@ -118,9 +128,36 @@ namespace YFarm.Inventory
             }
 
             EventHandler.CallUpdateInventoryUI(InventoryLocation.Bag,playerBag.inventoryItems);
+            
         }
-    }
-    
-    
+
+        private void OnDropItemEvent(int ID, Vector3 wroldPos)
+        {
+            RemoveItem(ID,1);
+        }
+
+        /// <summary>
+        /// 移除指定物品
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="removeAmount"></param>
+        private void RemoveItem(int ID,int removeAmount)
+        {
+            int index = GetItemIndexInBag(ID);
+            if(playerBag.inventoryItems[index].itemAmount > removeAmount)
+            {
+                int amount = playerBag.inventoryItems[index].itemAmount - removeAmount;
+                var item = new InventoryItem{itemID = ID,itemAmount = amount};
+                playerBag.inventoryItems[index] = item;
+            }
+            else if(playerBag.inventoryItems[index].itemAmount == removeAmount)
+            {
+                var item = new InventoryItem();
+                playerBag.inventoryItems[index] = item;
+            }
+
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Bag,playerBag.inventoryItems);
+        }
+    }   
 
 }

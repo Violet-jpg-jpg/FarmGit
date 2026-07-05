@@ -25,7 +25,7 @@ namespace YFarm.Inventory
         private void Start()
         {
             isSelected = false;
-            if (itemDetails.itemID == 0)
+            if (itemDetails == null)
                 UpdateEmptySlot();
         }
 
@@ -51,7 +51,13 @@ namespace YFarm.Inventory
         public void UpdateEmptySlot()
         {
             if (isSelected)
+            {
                 isSelected = false;
+
+                inventoryUI.UpdateHighLight(-1);
+                EventHandler.CallItemSelectedEvent(itemDetails,isSelected);
+            }
+            itemDetails = null;
             slotImage.enabled = false;
             amountText.text = "";
             button.interactable = false;
@@ -59,7 +65,7 @@ namespace YFarm.Inventory
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (itemAmount == 0) return;
+            if (itemDetails == null) return;
             isSelected = !isSelected;
             inventoryUI.UpdateHighLight(slotIndex);
 

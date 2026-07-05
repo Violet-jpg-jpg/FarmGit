@@ -49,6 +49,8 @@ public class AnimatorOverride : MonoBehaviour
         {
             ItemType.Seed => PartType.Hold,
             ItemType.Commodity => PartType.Hold,
+            ItemType.HoeTool => PartType.Hoe,
+            ItemType.WaterTool => PartType.Water,
             _ => PartType.None,
         };
 
@@ -71,6 +73,7 @@ public class AnimatorOverride : MonoBehaviour
     /// <param name="partType">动画</param>
     private void SwitchAnimatior(PartType partType)
     {
+        Debug.Log(partType);
         foreach(var anim in animationTypes)
         {
             if(anim.partType == partType)

@@ -18,7 +18,7 @@ namespace YFarm.Inventory
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (slot.itemAmount != 0)
+            if (slot.itemDetails != null)
             {
                 inventoryUI.itemTooltip.gameObject.SetActive(true);
                 inventoryUI.itemTooltip.SetupTooltip(slot.itemDetails, slot.slotType);
